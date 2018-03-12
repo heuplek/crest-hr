@@ -14,7 +14,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.ws.http.HTTPException;
+
 import edu.vt.crest.hr.entity.DepartmentEntity;
+import edu.vt.crest.hr.entity.EmployeeEntity;
 import edu.vt.crest.hr.services.DepartmentService;
 
 /**
@@ -37,7 +40,14 @@ public class DepartmentResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(DepartmentEntity department) {
-		return null;
+		DepartmentEntity createdDepartment;
+		try {
+			createdDepartment = departmentService.createDepartment(department);
+		}catch(Exception e){
+			System.out.println(e);
+			return Response.serverError().build();
+		}
+		return Response.ok(createdDepartment).build();
 	}
 
 	/**
@@ -49,7 +59,13 @@ public class DepartmentResource {
 	@Path("/{id:[0-9][0-9]*}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findById(@PathParam("id") Long id) {
-		return null;
+		DepartmentEntity departmentFound;
+		try {
+			departmentFound  = departmentService.findById(id);
+		}catch(Exception e){
+			return Response.serverError().build();
+		}
+		return Response.ok(departmentFound ).build();
 	}
 
 	/**
@@ -64,7 +80,10 @@ public class DepartmentResource {
 	public List<DepartmentEntity> listAll(@QueryParam("start") Integer startPosition,
 			@QueryParam("max") Integer maxResult) {
 
-		return null;
+		//start and max are both null here
+		List<DepartmentEntity> departmentList = departmentService.listAll(startPosition, maxResult);
+		return departmentList;
+
 	}
 
 	/**
@@ -78,7 +97,14 @@ public class DepartmentResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") Long id, DepartmentEntity department) {
-		return null;
+		DepartmentEntity updatedDepartment;
+		try{
+			updatedDepartment = departmentService.update(id, department);
+		}catch(Exception e){
+			System.out.println(e);
+			return Response.serverError().build();
+		}
+		return Response.ok(updatedDepartment).build();
 	}
 
 }

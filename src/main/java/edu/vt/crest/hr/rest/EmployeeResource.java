@@ -37,7 +37,14 @@ public class EmployeeResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create(EmployeeEntity employee) {
-		return null;
+		EmployeeEntity createdEmployee;
+		try{
+			createdEmployee = employeeService.createEmployee(employee);
+		}catch(Exception e){
+			System.out.println(e);
+			return Response.serverError().build();
+		}
+		return Response.ok(createdEmployee).build();
 	}
 
 	/**
@@ -49,7 +56,14 @@ public class EmployeeResource {
 	@Path("/{id:[0-9][0-9]*}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response findById(@PathParam("id") Long id) {
-		return null;
+		EmployeeEntity employeeFound;
+		try {
+			employeeFound  = employeeService.findById(id);
+		}catch(Exception e){
+			return Response.serverError().build();
+		}
+		return Response.ok(employeeFound).build();
+
 	}
 
 	/**
@@ -63,8 +77,8 @@ public class EmployeeResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<EmployeeEntity> listAll(@QueryParam("start") Integer startPosition,
 			@QueryParam("max") Integer maxResult) {
-
-		return null;
+		List<EmployeeEntity> employeeList = employeeService.listAll(startPosition, maxResult);
+		return employeeList;
 	}
 
 	/**
@@ -78,6 +92,13 @@ public class EmployeeResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") Long id, EmployeeEntity employee) {
-		return null;
+		EmployeeEntity updatedEmployee;
+		try{
+			updatedEmployee = employeeService.update(id, employee);
+		}catch(Exception e){
+			System.out.println(e);
+			return Response.serverError().build();
+		}
+		return Response.ok(updatedEmployee).build();
 	}
 }

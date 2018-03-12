@@ -1,15 +1,8 @@
 package edu.vt.crest.hr.entity;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -30,13 +23,14 @@ public class DepartmentEntity implements Serializable {
 	@Column(name = "version")
 	private int version;
 
-	@Column
+	@Column(name = "name")
 	private String name;
 
-	@Column
+	@Column(name = "identifier")
 	private String identifier;
 
-	@OneToMany
+	//Without adding EAGER an exception is thrown
+	@OneToMany(fetch= FetchType.EAGER)
 	@JoinColumn(name = "department_id", referencedColumnName = "id")
 	private Set<EmployeeEntity> employees;
 
